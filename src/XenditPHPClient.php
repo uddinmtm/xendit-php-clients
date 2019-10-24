@@ -141,6 +141,56 @@
             return $responseObject;
         }
 
+        function updateCallbackVirtualAccount ($fixed_virtual_account_id, $callback_virtual_account_options = null) {
+            $curl = curl_init();
+
+            $headers = array();
+            $headers[] = 'Content-Type: application/json';
+
+            $end_point = $this->server_domain.'/callback_virtual_accounts/'.$fixed_virtual_account_id;
+
+            if ( is_array($callback_virtual_account_options) ) {
+                foreach ( $callback_virtual_account_options as $key => $value ) {
+                    $data[$key] = $value;
+                }
+            }
+
+            $payload = json_encode($data);
+
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($curl, CURLOPT_USERPWD, $this->secret_api_key.":");
+            curl_setopt($curl, CURLOPT_URL, $end_point);
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PATCH');
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $payload);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+            $response = curl_exec($curl);
+            curl_close($curl);
+
+            $responseObject = json_decode($response, true);
+            return $responseObject;
+        }
+
+        function getCallbackVirtualAccount ($fixed_virtual_account_id) {
+            $curl = curl_init();
+
+            $headers = array();
+            $headers[] = 'Content-Type: application/json';
+
+            $end_point = $this->server_domain.'/callback_virtual_accounts/'.$fixed_virtual_account_id;
+
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($curl, CURLOPT_USERPWD, $this->secret_api_key.":");
+            curl_setopt($curl, CURLOPT_URL, $end_point);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+            $response = curl_exec($curl);
+            curl_close($curl);
+
+            $responseObject = json_decode($response, true);
+            return $responseObject;
+        }
+
         function getDisbursement ($disbursement_id) {
             $curl = curl_init();
 
